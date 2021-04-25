@@ -72,12 +72,9 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTokens = exports.getRates = exports.getDecimals = exports.getContractAddresses = exports.getWeb3 = exports.Ethereum = void 0;
-var web3_1 = __importDefault(require("web3"));
+var Web3 = __importStar(require("web3"));
 var abis = __importStar(require("./abis"));
 var helpers = __importStar(require("../../helpers"));
 var conversionEvents = __importStar(require("./conversion_events"));
@@ -86,32 +83,30 @@ var timestamp_to_block_number_1 = require("./timestamp_to_block_number");
 var types_1 = require("../../types");
 var CONTRACT_ADDRESSES = {
     main: {
-        registry: '0x52Ae12ABe5D8BD778BD5397F99cA900624CfADD4',
-        multicall: '0x5Eb3fa2DFECdDe21C950813C665E9364fa609bD2',
-        anchorToken: '0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C',
+        registry: "0x52Ae12ABe5D8BD778BD5397F99cA900624CfADD4",
+        multicall: "0x5Eb3fa2DFECdDe21C950813C665E9364fa609bD2",
+        anchorToken: "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C",
         pivotTokens: [
-            '0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C',
-            '0x309627af60F0926daa6041B8279484312f2bf060'
+            "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C",
+            "0x309627af60F0926daa6041B8279484312f2bf060"
         ],
         nonStandardTokenDecimals: {
-            '0xE0B7927c4aF23765Cb51314A0E0521A9645F0E2A': '9',
-            '0xbdEB4b83251Fb146687fa19D1C660F99411eefe3': '18',
-            '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE': '18'
+            "0xE0B7927c4aF23765Cb51314A0E0521A9645F0E2A": "9",
+            "0xbdEB4b83251Fb146687fa19D1C660F99411eefe3": "18",
+            "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE": "18"
         }
     },
     ropsten: {
-        registry: '0xFD95E724962fCfC269010A0c6700Aa09D5de3074',
-        multicall: '0xf3ad7e31b052ff96566eedd218a823430e74b406',
-        anchorToken: '0x62bd9D98d4E188e281D7B78e29334969bbE1053c',
-        pivotTokens: [
-            '0x62bd9D98d4E188e281D7B78e29334969bbE1053c'
-        ],
+        registry: "0xFD95E724962fCfC269010A0c6700Aa09D5de3074",
+        multicall: "0xf3ad7e31b052ff96566eedd218a823430e74b406",
+        anchorToken: "0x62bd9D98d4E188e281D7B78e29334969bbE1053c",
+        pivotTokens: ["0x62bd9D98d4E188e281D7B78e29334969bbE1053c"],
         nonStandardTokenDecimals: {}
     },
     dummy: {
-        registry: '0x0000000000000000000000000000000000000000',
-        multicall: '0x0000000000000000000000000000000000000000',
-        anchorToken: '0x0000000000000000000000000000000000000000',
+        registry: "0x0000000000000000000000000000000000000000",
+        multicall: "0x0000000000000000000000000000000000000000",
+        anchorToken: "0x0000000000000000000000000000000000000000",
         pivotTokens: [],
         nonStandardTokenDecimals: {}
     }
@@ -132,10 +127,14 @@ var Ethereum = /** @class */ (function () {
                     case 1:
                         _a.networkType = _b.sent();
                         contractRegistry = new ethereum.web3.eth.Contract(abis.ContractRegistry, exports.getContractAddresses(ethereum).registry);
-                        return [4 /*yield*/, contractRegistry.methods.addressOf(web3_1.default.utils.asciiToHex('BancorNetwork')).call()];
+                        return [4 /*yield*/, contractRegistry.methods
+                                .addressOf(Web3.utils.asciiToHex("BancorNetwork"))
+                                .call()];
                     case 2:
                         bancorNetworkAddress = _b.sent();
-                        return [4 /*yield*/, contractRegistry.methods.addressOf(web3_1.default.utils.asciiToHex('BancorConverterRegistry')).call()];
+                        return [4 /*yield*/, contractRegistry.methods
+                                .addressOf(Web3.utils.asciiToHex("BancorConverterRegistry"))
+                                .call()];
                     case 3:
                         converterRegistryAddress = _b.sent();
                         ethereum.bancorNetwork = new ethereum.web3.eth.Contract(abis.BancorNetwork, bancorNetworkAddress);
@@ -151,7 +150,8 @@ var Ethereum = /** @class */ (function () {
     Ethereum.destroy = function (ethereum) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                if (ethereum.web3.currentProvider && ethereum.web3.currentProvider.constructor.name == 'WebsocketProvider')
+                if (ethereum.web3.currentProvider &&
+                    ethereum.web3.currentProvider.constructor.name == "WebsocketProvider")
                     ethereum.web3.currentProvider.connection.close();
                 return [2 /*return*/];
             });
@@ -175,16 +175,24 @@ var Ethereum = /** @class */ (function () {
         });
     };
     Ethereum.prototype.getAnchorToken = function () {
-        return { blockchainType: types_1.BlockchainType.Ethereum, blockchainId: exports.getContractAddresses(this).anchorToken };
+        return {
+            blockchainType: types_1.BlockchainType.Ethereum,
+            blockchainId: exports.getContractAddresses(this).anchorToken
+        };
     };
     Ethereum.prototype.getPaths = function (sourceToken, targetToken) {
         return __awaiter(this, void 0, void 0, function () {
             var sourceAddress, targetAddress, addressPaths;
             return __generator(this, function (_a) {
-                sourceAddress = web3_1.default.utils.toChecksumAddress(sourceToken.blockchainId);
-                targetAddress = web3_1.default.utils.toChecksumAddress(targetToken.blockchainId);
+                sourceAddress = Web3.utils.toChecksumAddress(sourceToken.blockchainId);
+                targetAddress = Web3.utils.toChecksumAddress(targetToken.blockchainId);
                 addressPaths = this.getPathsFunc(sourceAddress, targetAddress);
-                return [2 /*return*/, addressPaths.map(function (addressPath) { return addressPath.map(function (address) { return ({ blockchainType: types_1.BlockchainType.Ethereum, blockchainId: address }); }); })];
+                return [2 /*return*/, addressPaths.map(function (addressPath) {
+                        return addressPath.map(function (address) { return ({
+                            blockchainType: types_1.BlockchainType.Ethereum,
+                            blockchainId: address
+                        }); });
+                    })];
             });
         });
     };
@@ -199,17 +207,23 @@ var Ethereum = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        addressPaths = tokenPaths.map(function (tokenPath) { return tokenPath.map(function (token) { return web3_1.default.utils.toChecksumAddress(token.blockchainId); }); });
+                        addressPaths = tokenPaths.map(function (tokenPath) {
+                            return tokenPath.map(function (token) { return Web3.utils.toChecksumAddress(token.blockchainId); });
+                        });
                         return [4 /*yield*/, exports.getDecimals(this, addressPaths[0][0])];
                     case 1:
                         sourceDecimals = _a.sent();
                         return [4 /*yield*/, exports.getDecimals(this, addressPaths[0].slice(-1)[0])];
                     case 2:
                         targetDecimals = _a.sent();
-                        return [4 /*yield*/, getRatesSafe(this, addressPaths, tokenAmounts.map(function (tokenAmount) { return helpers.toWei(tokenAmount, sourceDecimals); }))];
+                        return [4 /*yield*/, getRatesSafe(this, addressPaths, tokenAmounts.map(function (tokenAmount) {
+                                return helpers.toWei(tokenAmount, sourceDecimals);
+                            }))];
                     case 3:
                         tokenRatesPerAmount = _a.sent();
-                        return [2 /*return*/, tokenRatesPerAmount.map(function (tokenRates) { return tokenRates.map(function (tokenRate) { return helpers.fromWei(tokenRate, targetDecimals); }); })];
+                        return [2 /*return*/, tokenRatesPerAmount.map(function (tokenRates) {
+                                return tokenRates.map(function (tokenRate) { return helpers.fromWei(tokenRate, targetDecimals); });
+                            })];
                 }
             });
         });
@@ -219,7 +233,8 @@ var Ethereum = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, converterVersion.get(this.web3, converter.blockchainId)];
-                    case 1: return [2 /*return*/, (_a.sent()).value];
+                    case 1: return [2 /*return*/, (_a.sent())
+                            .value];
                 }
             });
         });
@@ -253,15 +268,21 @@ var Ethereum = /** @class */ (function () {
     };
     Ethereum.prototype.getAllPathsFunc = function (sourceToken, targetToken) {
         var paths = [];
-        var tokens = [web3_1.default.utils.toChecksumAddress(sourceToken)];
-        var destToken = web3_1.default.utils.toChecksumAddress(targetToken);
+        var tokens = [Web3.utils.toChecksumAddress(sourceToken)];
+        var destToken = Web3.utils.toChecksumAddress(targetToken);
         getAllPathsRecursive(paths, this.graph, tokens, destToken);
         return paths;
     };
     Ethereum.prototype.getSomePathsFunc = function (sourceToken, targetToken) {
         var _this = this;
-        var commonTokens = this.graph[sourceToken].filter(function (token) { return _this.graph[targetToken].includes(token); });
-        var paths = commonTokens.map(function (commonToken) { return [sourceToken, commonToken, targetToken]; });
+        var commonTokens = this.graph[sourceToken].filter(function (token) {
+            return _this.graph[targetToken].includes(token);
+        });
+        var paths = commonTokens.map(function (commonToken) { return [
+            sourceToken,
+            commonToken,
+            targetToken
+        ]; });
         var pivotTokens = exports.getContractAddresses(this).pivotTokens;
         for (var _i = 0, pivotTokens_1 = pivotTokens; _i < pivotTokens_1.length; _i++) {
             var pivotToken1 = pivotTokens_1[_i];
@@ -273,23 +294,25 @@ var Ethereum = /** @class */ (function () {
                 paths.push(getMergedPath(sourcePath.concat(middlePath.slice(1)), targetPath));
             }
         }
-        return Array.from(new Set(paths.map(function (path) { return path.join(','); }))).map(function (path) { return path.split(','); });
+        return Array.from(new Set(paths.map(function (path) { return path.join(","); }))).map(function (path) { return path.split(","); });
     };
     Ethereum.getNormalizedToken = function (token) {
-        return Object.assign({}, token, { blockchainId: web3_1.default.utils.toChecksumAddress(token.blockchainId) });
+        return Object.assign({}, token, {
+            blockchainId: Web3.utils.toChecksumAddress(token.blockchainId)
+        });
     };
     return Ethereum;
 }());
 exports.Ethereum = Ethereum;
 exports.getWeb3 = function (nodeEndpoint) {
-    var web3 = new web3_1.default();
+    var web3 = new Web3();
     web3.setProvider(nodeEndpoint);
     return web3;
 };
 exports.getContractAddresses = function (ethereum) {
     if (CONTRACT_ADDRESSES[ethereum.networkType])
         return CONTRACT_ADDRESSES[ethereum.networkType];
-    throw new Error(ethereum.networkType + ' network not supported');
+    throw new Error(ethereum.networkType + " network not supported");
 };
 exports.getDecimals = function (ethereum, token) {
     return __awaiter(this, void 0, void 0, function () {
@@ -337,8 +360,10 @@ function getRatesSafe(ethereum, paths, amounts) {
                     return [4 /*yield*/, getRatesSafe(ethereum, paths.slice(mid, paths.length), amounts)];
                 case 4:
                     arr2_1 = _a.sent();
-                    return [2 /*return*/, Array(amounts.length).fill([]).map(function (_, i) { return __spreadArrays(arr1_1[i], arr2_1[i]); })];
-                case 5: return [2 /*return*/, Array(amounts.length).fill(Array(paths.length).fill('0'))];
+                    return [2 /*return*/, Array(amounts.length)
+                            .fill([])
+                            .map(function (_, i) { return __spreadArrays(arr1_1[i], arr2_1[i]); })];
+                case 5: return [2 /*return*/, Array(amounts.length).fill(Array(paths.length).fill("0"))];
                 case 6: return [2 /*return*/];
             }
         });
@@ -350,15 +375,24 @@ exports.getRates = function (ethereum, paths, amounts) {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    calls = amounts.map(function (amount) {
-                        return paths.map(function (path) { return [ethereum.bancorNetwork._address, ethereum.bancorNetwork.methods.getReturnByPath(path, amount).encodeABI()]; });
-                    }).reduce(function (array, val) { return array.concat(val); }, []);
+                    calls = amounts
+                        .map(function (amount) {
+                        return paths.map(function (path) { return [
+                            ethereum.bancorNetwork._address,
+                            ethereum.bancorNetwork.methods.getReturnByPath(path, amount).encodeABI()
+                        ]; });
+                    })
+                        .reduce(function (array, val) { return array.concat(val); }, []);
                     return [4 /*yield*/, ethereum.multicallContract.methods.aggregate(calls, false).call()];
                 case 1:
                     _a = _b.sent(), blockNumber = _a[0], returnData = _a[1];
-                    return [2 /*return*/, Array(amounts.length).fill('0').map(function (_, i) {
+                    return [2 /*return*/, Array(amounts.length)
+                            .fill("0")
+                            .map(function (_, i) {
                             var _returnData = returnData.slice(i * paths.length, i * paths.length + paths.length);
-                            return _returnData.map(function (item) { return item.success ? web3_1.default.utils.toBN(item.data.substr(0, 66)).toString() : '0'; });
+                            return _returnData.map(function (item) {
+                                return item.success ? Web3.utils.toBN(item.data.substr(0, 66)).toString() : "0";
+                            });
                         })];
             }
         });
@@ -369,14 +403,25 @@ exports.getTokens = function (ethereum) {
         var convertibleTokens, calls, _a, blockNumber, returnData, smartTokenLists;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, ethereum.converterRegistry.methods.getConvertibleTokens().call()];
+                case 0: return [4 /*yield*/, ethereum.converterRegistry.methods
+                        .getConvertibleTokens()
+                        .call()];
                 case 1:
                     convertibleTokens = _b.sent();
-                    calls = convertibleTokens.map(function (convertibleToken) { return [ethereum.converterRegistry._address, ethereum.converterRegistry.methods.getConvertibleTokenSmartTokens(convertibleToken).encodeABI()]; });
+                    calls = convertibleTokens.map(function (convertibleToken) { return [
+                        ethereum.converterRegistry._address,
+                        ethereum.converterRegistry.methods
+                            .getConvertibleTokenSmartTokens(convertibleToken)
+                            .encodeABI()
+                    ]; });
                     return [4 /*yield*/, ethereum.multicallContract.methods.aggregate(calls, true).call()];
                 case 2:
                     _a = _b.sent(), blockNumber = _a[0], returnData = _a[1];
-                    smartTokenLists = returnData.map(function (item) { return Array.from(Array((item.data.length - 130) / 64).keys()).map(function (n) { return web3_1.default.utils.toChecksumAddress(item.data.substr(64 * n + 154, 40)); }); });
+                    smartTokenLists = returnData.map(function (item) {
+                        return Array.from(Array((item.data.length - 130) / 64).keys()).map(function (n) {
+                            return Web3.utils.toChecksumAddress(item.data.substr(64 * n + 154, 40));
+                        });
+                    });
                     return [2 /*return*/, convertibleTokens.reduce(function (obj, item, index) {
                             var _a;
                             return (__assign(__assign({}, obj), (_a = {}, _a[item] = smartTokenLists[index], _a)));
@@ -456,7 +501,10 @@ function getAllPathsRecursive(paths, graph, tokens, destToken) {
 }
 function getOnePathRecursive(tree, token) {
     if (tree[token].length > 0)
-        return __spreadArrays([token, tree[token][0]], getOnePathRecursive(tree, tree[token][1]));
+        return __spreadArrays([
+            token,
+            tree[token][0]
+        ], getOnePathRecursive(tree, tree[token][1]));
     return [token];
 }
 function getMergedPath(sourcePath, targetPath) {
@@ -474,7 +522,7 @@ function getMergedPath(sourcePath, targetPath) {
             path.push(targetPath[n]);
         var length_1 = 0;
         for (var p = 0; p < path.length; p += 1) {
-            for (var q = p + 2; q < path.length - p % 2; q += 2) {
+            for (var q = p + 2; q < path.length - (p % 2); q += 2) {
                 if (path[p] == path[q])
                     p = q;
             }
