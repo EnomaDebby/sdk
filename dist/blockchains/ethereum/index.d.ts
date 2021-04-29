@@ -1,5 +1,5 @@
-import Web3 from 'web3';
-import { Blockchain, Converter, ConversionEvent, TokenRateEvent, Token } from '../../types';
+import Web3 from "web3";
+import { Blockchain, Converter, ConversionEvent, TokenRateEvent, Token } from "../../types";
 export declare class Ethereum implements Blockchain {
     web3: Web3;
     contractAddresses: object;
